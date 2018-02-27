@@ -2,6 +2,7 @@
 $(document).ready(function () {
 
     var buttonNumber = 0
+    var topicInput
 
     //function to dynamically add buttons.  Parameters 
     function dynamicButtonAdd(buttonName, divToAppendTo) {
@@ -16,31 +17,58 @@ $(document).ready(function () {
     //onclick event that adds dynamic buttons.  Calls function dyamicButtonAdd
     $("#addTopic").on("click", function () {
         event.preventDefault()
-        var topicInput = $("#addInput").val()
+        topicInput = $("#addInput").val()
         dynamicButtonAdd(topicInput, "#topicButtons")
         $("#addInput").val("")
         $("#topicResult").empty()
 
-        $(".btn").on("click", function (document) {
+        //onclick event that searches giphy api when buttons clicked.  Buttons text are used to search
+        $(".btn-primary").on("click", function (document) {
             $("#topicResult").empty()
             var APIKEY = "4aW0ucG0qcPg0ONPsekdiLuJCcUFRAzX"
             var searchMe = $(this).text()
             var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + searchMe + "&api_key=" + APIKEY + "&limit=10"
-            
+
             $.ajax({
                 url: queryUrl,
                 method: 'GET'
             }).then(function (requestResult) {
                 console.log(requestResult)
                 for (var i = 0; i < 10; i++) {
-                    $("#topicResult").append("<img src='" + requestResult.data[i].images.fixed_height.url + "'><br>")
+                    $("#topicResult").append(i + " " + "<img src='" + requestResult.data[i].images.fixed_height.url + " 'index="+i+"><br>")
+                    $("img").attr("state", "active")
                     $("#topicResult").append("<p>Rating: " + requestResult.data[i].rating + "</p>")
                 }
+                //onclick event that pauses and restarts gifs
+                $("img").on("click", function () {
+                    var state = $(this).attr("state")
+                    if (state === "active") {
+                        //debug - alert("current state is" + $(this).attr("state"))
+                        $(this).attr("src", requestResult.data[$(this).attr("index")].images.fixed_height_still.url)
+                        $(this).attr("state", "still")
+                       //debug - alert("state is now" + $(this).attr("state"))
+                    }
+                    else {
+                        //debug - alert("current state is" + $(this).attr("state"))
+                        $(this).attr("src", requestResult.data[$(this).attr("index")].images.fixed_height.url)
+                        $(this).attr("state", "active")
+                       //debug - alert("state is now" + $(this).attr("state"))
+                    }
+                })
             })//end ajax
-        })//end .btn click event
-    })//end #addTopic onclick
 
-    //onclick event that searches giphy api when buttons clicked.  Buttons text are used to search
+
+        })//end #addTopic onclick
+
+
+
+
+
+
+    })//end .btn click event
+
+
+
 });  //close document.ready
 
 

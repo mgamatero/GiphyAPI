@@ -33,8 +33,8 @@ $(document).ready(function () {
                 url: queryUrl,
                 method: 'GET'
             }).then(function (requestResult) {
-                console.log(requestResult)
-                for (var i = 0; i < 10; i++) {
+                console.log('getResponse', requestResult.data)
+                for (var i = 0; i < requestResult.data.length; i++) {
                     $("#topicResult").append(i + " " + "<img src='" + requestResult.data[i].images.fixed_height.url + " 'index="+i+"><br>")
                     $("img").attr("state", "active")
                     $("#topicResult").append("<p>Rating: " + requestResult.data[i].rating + "</p>")

@@ -23,18 +23,17 @@ $(document).ready(function () {
         $("#topicResult").empty()
 
         //onclick event that searches giphy api when buttons clicked.  Buttons text are used to search
-        $(document).on('click', '.btn-primary', function () {
-            $("#topicResult").empty()
+        $(document).on('click','.btn-primary', function () {
             var APIKEY = "4aW0ucG0qcPg0ONPsekdiLuJCcUFRAzX"
             var searchMe = $(this).text()
             var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + searchMe + "&api_key=" + APIKEY + "&limit=10"
-
-
+            
+            
             $.ajax({
                 url: queryUrl,
                 method: 'GET'
             }).then(function (requestResult) {
-
+                $("#topicResult").empty()
                 console.log('getResponse', requestResult.data)
                 for (var i = 0; i < requestResult.data.length; i++) {
                     $("#topicResult").append(i + " " + "<img src='" + requestResult.data[i].images.fixed_height.url + " 'index=" + i + "><br>")

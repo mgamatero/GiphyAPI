@@ -40,26 +40,29 @@ $(document).ready(function () {
                     $("img").attr("state", "active")
                     $("#topicResult").append("<p>Rating: " + requestResult.data[i].rating + "</p>")
                 }
+                $(document).on("click", "img", function () {
+                    var state = $(this).attr("state")
+                    if (state === "active") {
+                        //debug - alert("current state is" + $(this).attr("state"))
+                        $(this).attr("src", requestResult.data[$(this).attr("index")].images.fixed_height_still.url)
+                        $(this).attr("state", "still")
+                        alert("state is now" + $(this).attr("state"))
+                    }
+                    else {
+                        //debug - alert("current state is" + $(this).attr("state"))
+                        $(this).attr("src", requestResult.data[$(this).attr("index")].images.fixed_height.url)
+                        $(this).attr("state", "active")
+                        alert("state is now" + $(this).attr("state"))
+                    }
+                })//end pause gifs click
+
+
             })
 
 
             //onclick event that pauses and restarts gifs
             // $("img").on("click", function () {
-            $(document).on("click", "img", function () {
-                var state = $(this).attr("state")
-                if (state === "active") {
-                    //debug - alert("current state is" + $(this).attr("state"))
-                    $(this).attr("src", requestResult.data[$(this).attr("index")].images.fixed_height_still.url)
-                    $(this).attr("state", "still")
-                    //debug - alert("state is now" + $(this).attr("state"))
-                }
-                else {
-                    //debug - alert("current state is" + $(this).attr("state"))
-                    $(this).attr("src", requestResult.data[$(this).attr("index")].images.fixed_height.url)
-                    $(this).attr("state", "active")
-                    //debug - alert("state is now" + $(this).attr("state"))
-                }
-            })//end pause gifs click
+           
         })//end ajax
     })//end #addTopic onclick
 });  //close document.ready
